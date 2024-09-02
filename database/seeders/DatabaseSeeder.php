@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +20,16 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $faker = Faker::create();
+
+        for ($i = 0; $i < 200; $i++) {
+            DB::table('master_drugs')->insert([
+                'drug_name' => $faker->sentence($nbWords = 6, $variableNbWords = true),
+                'remark' => $faker->paragraph($nbSentences = 2, $variableNbSentences = true),
+                'created_at' => $faker->dateTime,
+                'updated_at' => $faker->dateTime,
+            ]);
+        }
     }
 }
