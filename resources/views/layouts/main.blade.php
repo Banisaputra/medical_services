@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="{{url('/frontend/assets/css/demo.css')}}" />
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet"> --}}
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{url('/frontend/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css')}}" />
@@ -109,6 +111,7 @@
     <script src="{{url('/frontend/assets/vendor/js/menu.js')}}"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- endbuild -->
 

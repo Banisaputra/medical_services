@@ -37,7 +37,16 @@ Route::put('patient/update/{id}', [MasterPatientController::class, 'update'])->n
 Route::delete('patient/{id}', [MasterPatientController::class, 'destroy'])->name('masterPatient.destroy');
 
 // history
-Route::get('history', [ServiceHistoryController::class, 'index'])->name('history.index');
+Route::get('history', [ServiceHistoryController::class, 'index'])->name('serviceHistory.index');
+Route::get('history/create', [ServiceHistoryController::class, 'create'])->name('serviceHistory.create');
+Route::get('history/search-patient', [ServiceHistoryController::class, 'patient'])->name('serviceHistory.patient');
+Route::get('history/search-drug', [ServiceHistoryController::class, 'drug'])->name('serviceHistory.drug');
+Route::post('history/store', [ServiceHistoryController::class, 'store'])->name('serviceHistory.store');
+Route::get('history/edit/{id}', [ServiceHistoryController::class, 'edit'])->name('serviceHistory.edit');
+Route::put('history/update/{id}', [ServiceHistoryController::class, 'update'])->name('serviceHistory.update');
+Route::delete('history/{id}', [ServiceHistoryController::class, 'destroy'])->name('serviceHistory.destroy');
+
+
 
 // report
 Route::get('report', [ServiceHistoryController::class, 'index'])->name('report.index');

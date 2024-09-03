@@ -7,7 +7,7 @@
          <div class="row">
             <div class="col-lg-3 col-md-12 col-6 mb-4">
                <div class="card">
-                  <a href="#">
+                  <a href="{{route('serviceHistory.create')}}">
                      <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                            <div class="avatar flex-shrink-0">
@@ -24,7 +24,7 @@
             </div>
             <div class="col-lg-3 col-md-12 col-6 mb-4">
                <div class="card">
-                  <a href="#">
+                  <a href="{{route('serviceHistory.index')}}">
                      <div class="card-body">
                         <div class="card-title d-flex align-items-start justify-content-between">
                            <div class="avatar flex-shrink-0">

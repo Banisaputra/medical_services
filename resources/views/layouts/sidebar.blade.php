@@ -76,7 +76,7 @@
       <!-- Report -->
       <li class="menu-header small text-uppercase"><span class="menu-header-text">History & Report</span></li>
       <li class="menu-item">
-        <a href="{{ route('history.index') }}" class="menu-link">
+        <a href="{{ route('serviceHistory.index') }}" class="menu-link">
           <i class="menu-icon tf-icons bx bx-history"></i>
           <div data-i18n="history">Riwayat Pasien</div>
         </a>
