@@ -15,8 +15,9 @@
             </div>
          @endif
          <div class="card-body">
-            <form action="{{ route('serviceHistory.store')}}" method="POST">
+            <form action="{{ route('serviceHistory.update', $data->id)}}" method="POST">
                @csrf
+               @method('PUT')
                <input type="hidden" value="{{ $data->id }}" id="serviceHistoryId">
                <div class="mb-3">
                   <label for="service_date" class="form-label">Tanggal Periksa</label>
@@ -41,7 +42,7 @@
                   </div>
                </div>
                <div class="mb-3">
-                  <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Simpan</button>
+                  <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Update</button>
                </div>
             </form>
          </div>
@@ -111,19 +112,20 @@
         multiple: true
       });
 
-
-
       // editable controll
 var serviceHistoryId = $('#serviceHistoryId').val();
+console.log(serviceHistoryId);
+
 var diagnosis = $('#diagnosis');
 var selectPatient = $('#patient_id');
 var selectDrug = $('#medical_prescription');
+var url = '{{ route("serviceHistory.edit", ":id") }}';
 $.ajax({
     type: 'GET',
-    url: '{{ route("serviceHistory.edit", 2) }}' ,
+    url: url.replace(':id', serviceHistoryId),
 }).then(function (response) {
    diagnosis.val(response.diagnosis);
-   var patienOption = new Option(response.patient_name, response.id, true, true);
+   var patienOption = new Option(response.patient_name, response.patient_id, true, true);
    selectPatient.append(patienOption).trigger('change');
 
    response.drug_history.forEach(e => {

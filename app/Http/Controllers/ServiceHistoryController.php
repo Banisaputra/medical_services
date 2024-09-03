@@ -106,6 +106,7 @@ class ServiceHistoryController extends Controller
 
             $result = [
                 'id' => $id,
+                'patient_id' => $data->patient_id,
                 'patient_name' => $data->patient->patient_name,
                 'diagnosis' => $data->diagnosis,
                 'medical_prescription' => explode(',', $data->medical_prescription),  // convert string to array for view in edit form
@@ -117,15 +118,21 @@ class ServiceHistoryController extends Controller
     }
 
     public function update(Request $request, $id) {
+        // dd($id);
         // Validate the incoming request data
         $validated = $request->validate([
-            'patient_name' => 'required|string|max:255',
-            'patient_address' => 'required|string',
+            'patient_id' => 'required|numeric',
+            'diagnosis' => 'required|string|max:255',
+            'medical_prescription' => 'required|array',
         ]);
-        
+        $data = [
+            'patient_id' => $request->patient_id,
+            'diagnosis' => $request->diagnosis,
+            'medical_prescription' => implode(',', $request->medical_prescription),
+        ];
         // ServiceHistories::find($id)->update($request->all());
         $item = ServiceHistories::findOrFail($id);
-        $item->update($validated);
+        $item->update($data);
 
         return redirect()->route('serviceHistory.index')->with('success', 'Data berhasil diubah');
     }
