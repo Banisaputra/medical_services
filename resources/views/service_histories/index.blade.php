@@ -15,6 +15,7 @@
             <tr>
                <th width="6%">No</th>
                <th>Pasien</th>
+               <th>Tanggal</th>
                <th>Diagnosis</th>
                <th>Resep Obat</th>
                <th width="11%">Action</th>
@@ -38,6 +39,7 @@
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex'},
                 {data: 'patient_name', name: 'patient_name'},
+                {data: 'date_service', name: 'date_service'},
                 {data: 'diagnosis', name: 'diagnosis'},
                 {data: 'drug_history', name: 'drug_history'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

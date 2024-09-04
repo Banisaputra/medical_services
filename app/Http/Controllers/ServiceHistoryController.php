@@ -26,6 +26,7 @@ class ServiceHistoryController extends Controller
                 $data[$key] = (object) [
                     'id' => $history->id,
                     'patient_name' => $patient->patient_name,
+                    'date_service' => $history->created_at->format('d/m/Y'),
                     'diagnosis' => $history->diagnosis,
                     'drug_history' => $drugHistory,
                 ];
