@@ -42,7 +42,15 @@ class MasterDrugController extends Controller
     }
 
     public function store(Request $request) {
-        MasterDrugs::create($request->all());
+
+        $validated = $request->validate([
+            'drug_name' => 'required|string|max:255',
+            'remark' => 'required|string',
+        ]);
+        MasterDrugs::create($validated);
+        if(isset($request->is_service) && $request->is_service == 1) {
+            return redirect()->back()->with('success', 'Obat baru berhasil ditambahkan');
+        }
         return redirect()->route('masterObat.index')->with('success', 'Data berhasil disimpan');
     }
 

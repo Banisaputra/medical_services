@@ -49,6 +49,9 @@ class MasterPatientController extends Controller
         ]);
 
         MasterPatients::create($validated);
+        if(isset($request->is_service) && $request->is_service == 1) {
+            return redirect()->back()->with('success', 'Pasien baru berhasil ditambahkan');
+        }
         return redirect()->route('masterPatient.index')->with('success', 'Data berhasil disimpan');
     }
 

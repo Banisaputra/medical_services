@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MasterDrugController;
 use App\Http\Controllers\MasterPatientController;
 use App\Http\Controllers\ServiceHistoryController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,9 @@ Route::put('history/update/{id}', [ServiceHistoryController::class, 'update'])->
 Route::delete('history/{id}', [ServiceHistoryController::class, 'destroy'])->name('serviceHistory.destroy');
 
 
-
 // report
-Route::get('report', [ServiceHistoryController::class, 'index'])->name('report.index');
+Route::controller(ReportController::class)->group(function(){
+    Route::get('report', 'index')->name('report.index');
+    Route::get('exportXlsx/{type}', 'exportXlsx')->name('export.xlsx');
+    Route::get('exportPdf/{type}', 'exportPDF')->name('export.pdf');
+});
