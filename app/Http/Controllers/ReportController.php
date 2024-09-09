@@ -81,7 +81,24 @@ class ReportController extends Controller
                 exit();
                 break;
             case 'serviceHistory':
-                $serviceHistories = ServiceHistories::all();
+                $servHistory = ServiceHistories::latest()->get();
+                $serviceHistories = [];
+                foreach ($servHistory as $key => $history) {
+                    $patient = $history->patient;
+                    // get drug history
+                    $drugPrescription = MasterDrugs::whereIn('id', explode(",", $history->medical_prescription))->get();
+                    $drugHistory = "";
+                    foreach ($drugPrescription as $drug) {
+                        $drugHistory .= "- " .$drug->drug_name. "\n";
+                    }
+                    $serviceHistories[$key] = (object) [
+                        'id' => $history->id,
+                        'patient_name' => $patient->patient_name,
+                        'date_service' => $history->created_at->format('d/m/Y'),
+                        'diagnosis' => $history->diagnosis,
+                        'drug_history' => $drugHistory,
+                    ];
+                }
 
                 $spreadsheet = new Spreadsheet();
                 $sheet = $spreadsheet->getActiveSheet();
@@ -93,11 +110,11 @@ class ReportController extends Controller
 
                 $column = 2;
                 foreach ($serviceHistories as $key => $value) {
-                    $sheet->setCellValue('A' . $column, ($key + 1));
-                    $sheet->setCellValue('B' . $column, $value->patient->patient_name);
-                    $sheet->setCellValue('C' . $column, $value->created_at->format('d-m-Y'));
-                    $sheet->setCellValue('D' . $column, $value->diagnosis);
-                    $sheet->setCellValue('E' . $column, $value->medical_prescription);
+                    $sheet->setCellValue('A' . $column, ($key + 1))->getStyle('A' . $column)->getAlignment()->setVertical('top');
+                    $sheet->setCellValue('B' . $column, $value->patient_name)->getStyle('B' . $column)->getAlignment()->setVertical('top');
+                    $sheet->setCellValue('C' . $column, $value->date_service)->getStyle('C' . $column)->getAlignment()->setVertical('top');
+                    $sheet->setCellValue('D' . $column, $value->diagnosis)->getStyle('D' . $column)->getAlignment()->setVertical('top');
+                    $sheet->setCellValue('E' . $column, $value->drug_history)->getStyle('E' . $column)->getAlignment()->setWrapText(true);
                     $column++;
                 }
 
@@ -135,6 +152,49 @@ class ReportController extends Controller
                 $mpdf->writeHTML(utf8_encode($html));
                 // $this->response->setContentType('application/pdf');
                 $mpdf->Output('master_drugs.pdf','I');
+                break;
+
+            case 'masterPatient':
+                $masterPatients = MasterPatients::all();
+                $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'FOLIO-P']);
+
+                $data = [
+                    'masterPatients' => $masterPatients
+                ];
+                $html = view('export_templates.master_patients', $data);
+                $mpdf->writeHTML(utf8_encode($html));
+                // $this->response->setContentType('application/pdf');
+                $mpdf->Output('master_patients.pdf','I');
+                break;
+            
+            case 'serviceHistory':
+                $servHistories = ServiceHistories::all();
+                $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'FOLIO-P']);
+                $serviceHistories = [];
+                foreach ($servHistories as $key => $history) {
+                    $patient = $history->patient;
+                    // get drug history
+                    $drugPrescription = MasterDrugs::whereIn('id', explode(",", $history->medical_prescription))->get();
+                    $drugHistory = "";
+                    foreach ($drugPrescription as $drug) {
+                        $drugHistory .= "- " .$drug->drug_name. "<br/>";
+                    }
+                    $serviceHistories[$key] = (object) [
+                        'id' => $history->id,
+                        'patient_name' => $patient->patient_name,
+                        'date_service' => $history->created_at->format('d/m/Y'),
+                        'diagnosis' => $history->diagnosis,
+                        'drug_history' => $drugHistory,
+                    ];
+                }
+
+                $data = [
+                    'serviceHistories' => $serviceHistories
+                ];
+                $html = view('export_templates.service_histories', $data);
+                $mpdf->writeHTML(utf8_encode($html));
+                // $this->response->setContentType('application/pdf');
+                $mpdf->Output('service_histories.pdf','I');
                 break;
             
             default:
