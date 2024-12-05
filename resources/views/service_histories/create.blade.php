@@ -92,7 +92,6 @@
                   <label for="patient_id" class="form-label">Nama Pasien</label>
                   <div class="input-group">
                      <select class="form-select js-patient-search" id="patient_id" name="patient_id"></select>
-                     {{-- <a href="{{route('masterPatient.create')}}" class="btn btn-outline-primary mr-3"><i class='bx bx-plus'></i></a> --}}
                      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalPatient"><i class='bx bx-plus'></i></button>
                   </div>
                </div>
@@ -104,12 +103,12 @@
                   <label for="medical_prescription" class="form-label">Resep Obat</label>
                   <div class="input-group">
                      <select class="form-select js-drug-search" id="medical_prescription" name="medical_prescription[]" multiple="multiple"></select>
-                     {{-- <a href="{{route('masterObat.create')}}" class="btn btn-outline-primary mr-3"><i class='bx bx-plus'></i></a> --}}
                      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalDrug"><i class='bx bx-plus'></i></button>
                   </div>
                </div>
                <div class="mb-3">
                   <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Simpan</button>
+                  <a href="{{ url()->previous() }}" class="btn btn-secondary"><i class='bx bx-x'></i> Batal</a>
                </div>
             </form>
          </div>
@@ -119,15 +118,14 @@
 
 @endsection
 
-
 @section('script')
 <script type="text/javascript">
    $(document).ready(function() {
       $('.js-patient-search').select2({
-        ajax: {
+         ajax: {
             url: '{{ route("serviceHistory.patient") }}',
             dataType: 'json',
-            delay: 250,
+            delay: 150,
             data: function (params) {
                 return {
                     keyword: params.term
@@ -151,40 +149,37 @@
       });
       
       $('.js-drug-search').select2({
-         
-        ajax: {
+         ajax: {
             url: '{{ route("serviceHistory.drug") }}',
             dataType: 'json',
-            delay: 250,
+            delay: 150,
             data: function (params) {
-                return {
-                    keyword: params.term
-                };
+                  return {
+                     keyword: params.term
+                  };
             },
             processResults: function (data) {
-                return {
-                    results: $.map(data, function (item) {
+                  return {
+                     results: $.map(data, function (item) {
                         return {
-                            text: item.drug_name,
-                            id: item.id
+                              text: item.drug_name,
+                              id: item.id
                         }
-                    })
-                };
+                     })
+                  };
             },
             cache: true
-        },
-        minimumInputLength: 2,
-        placeholder: 'Select drug',
-        allowClear: true,
-        multiple: true
+         },
+         minimumInputLength: 2,
+         placeholder: 'Select drug',
+         allowClear: true,
+         multiple: true
       });
 
-      // clear form modalPatient
+      // clear form
       $('#modalPatient, #modalDrug').on('hidden.bs.modal', function (e) {
          $(this).find('form').trigger('reset');
       })
-       
    });
 </script>
-    
 @endsection

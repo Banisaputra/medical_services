@@ -105,6 +105,7 @@
                </div>
                <div class="mb-3">
                   <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Update</button>
+                  <a href="{{ url()->previous() }}" class="btn btn-secondary"><i class='bx bx-x'></i> Batal</a>
                </div>
             </form>
          </div>
@@ -119,34 +120,33 @@
 <script type="text/javascript">
    $(document).ready(function() {
       $('.js-patient-search').select2({
-         
         ajax: {
-            url: '{{ route("serviceHistory.patient") }}',  // Replace with your route
+            url: '{{ route("serviceHistory.patient") }}',
             dataType: 'json',
-            delay: 250,
+            delay: 150,
             data: function (params) {
                 return {
-                    keyword: params.term // search term
+                    keyword: params.term
                 };
             },
             processResults: function (data) {
                 return {
                     results: $.map(data, function (item) {
                         return {
-                            text: item.patient_name,  // The text property will be displayed in the dropdown
-                            id: item.id       // The id property will be sent to the server
+                            text: item.patient_name,
+                            id: item.id
                         }
                     })
                 };
             },
             cache: true
         },
-        minimumInputLength: 2, // Start searching after 2 characters
+        minimumInputLength: 2,
         placeholder: 'Select patient',
         allowClear: true
       });
+
       $('.js-drug-search').select2({
-         
         ajax: {
             url: '{{ route("serviceHistory.drug") }}',
             dataType: 'json',
@@ -175,39 +175,38 @@
       });
 
       // editable controll
-var serviceHistoryId = $('#serviceHistoryId').val();
+      var serviceHistoryId = $('#serviceHistoryId').val();
 
-var diagnosis = $('#diagnosis');
-var selectPatient = $('#patient_id');
-var selectDrug = $('#medical_prescription');
-var url = '{{ route("serviceHistory.edit", ":id") }}';
-$.ajax({
-    type: 'GET',
-    url: url.replace(':id', serviceHistoryId),
-}).then(function (response) {
-   diagnosis.val(response.diagnosis);
-   var patienOption = new Option(response.patient_name, response.patient_id, true, true);
-   selectPatient.append(patienOption).trigger('change');
+      var diagnosis = $('#diagnosis');
+      var selectPatient = $('#patient_id');
+      var selectDrug = $('#medical_prescription');
+      var url = '{{ route("serviceHistory.edit", ":id") }}';
+      $.ajax({
+         type: 'GET',
+         url: url.replace(':id', serviceHistoryId),
+      }).then(function (response) {
+         diagnosis.val(response.diagnosis);
+         var patienOption = new Option(response.patient_name, response.patient_id, true, true);
+         selectPatient.append(patienOption).trigger('change');
 
-   response.drug_history.forEach(e => {
-      var drugOption = new Option(e.drug_name, e.id, true, true);
-      selectDrug.append(drugOption).trigger('change');
-   });
+         response.drug_history.forEach(e => {
+            var drugOption = new Option(e.drug_name, e.id, true, true);
+            selectDrug.append(drugOption).trigger('change');
+         });
 
-   selectPatient.trigger({
-      type: 'select2:select',
-      params: {
-         results: response
-      }
-   });
-   selectDrug.trigger({
-      type: 'select2:select',
-      params: {
-         results: response
-      }
-   });
-});
-
+         selectPatient.trigger({
+            type: 'select2:select',
+            params: {
+               results: response
+            }
+         });
+         selectDrug.trigger({
+            type: 'select2:select',
+            params: {
+               results: response
+            }
+         });
+      });
    });
 </script>
     

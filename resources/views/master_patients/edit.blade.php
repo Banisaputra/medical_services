@@ -28,6 +28,7 @@
                </div>
                <div class="mb-3">
                   <button type="submit" class="btn btn-primary"><i class='bx bx-save'></i> Update</button>
+                  <a href="{{ url()->previous() }}" class="btn btn-secondary"><i class='bx bx-x'></i> Batal</a>
                </div>
             </form>
          </div>
